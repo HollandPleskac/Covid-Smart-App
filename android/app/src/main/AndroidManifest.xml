@@ -8,7 +8,13 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="covid_smart_app"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        >
+
+        <!-- google maps -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAWTgCA0iYw1GZ_lgTfw81tPF8xEzCCRh8"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -33,6 +39,7 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+              
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -43,5 +50,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        
     </application>
 </manifest>
