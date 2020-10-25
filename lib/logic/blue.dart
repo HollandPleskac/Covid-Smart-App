@@ -29,7 +29,7 @@ class Blue {
             deviceids.add('${r.device.id}');
             // log
             _fire.logEncounter(
-              county: 'San Joaquin',
+              county: 'San Joaquin County',
               email: email,
               time: DateTime.now(),
               lat: _locationData.latitude,
