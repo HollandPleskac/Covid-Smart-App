@@ -1,3 +1,4 @@
+import 'package:covid_smart_app/screens/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MapSample()
+      home: SignIn()
     );
   }
 }

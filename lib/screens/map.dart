@@ -60,8 +60,8 @@ class MapSampleState extends State<MapSample> {
                           sigmaY: 20.0,
                         ),
                         child: Container(
-                          // child: TripActions(tripId),
-                          child: StartTrip(),
+                          child: tripId == "" ? StartTrip() : TripActions(tripId),
+                         
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: 130,
                           decoration: BoxDecoration(
@@ -203,7 +203,16 @@ class TripActions extends StatelessWidget {
 class StartTrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: FlatButton(
+        child: Text('Start'),
+        color: Colors.blue[300],
+        onPressed: () {
+          _fire.createTrip('test@gmail.com');
+        },
+      ),
+    );
   }
 }
 
