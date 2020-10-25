@@ -13,14 +13,12 @@ class TripData extends StatefulWidget {
   final String tripId;
 
   TripData(this.tripId);
-  
+
   @override
   _TripDataState createState() => _TripDataState();
 }
 
 class _TripDataState extends State<TripData> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +57,8 @@ class _TripDataState extends State<TripData> {
                                   stream: _fire.streamTrip(widget.tripId),
                                   builder: (context, snapshot) {
                                     Trip trip = snapshot.data;
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
                                       return Container();
                                     }
                                     return Text(
@@ -231,15 +230,60 @@ class _TripDataState extends State<TripData> {
                               : StreamBuilder(
                                   stream: _fire.streamTrip(widget.tripId),
                                   builder: (context, snapshot) {
-                                    return Text(
-                                      "7",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 80,
-                                          fontWeight: FontWeight.w300),
-                                    );
-                                  },
-                                ),
+                                    Trip trip = snapshot.data;
+                                    int tripenounters =
+                                        trip.encounters.toInt();
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container();
+                                    }
+                                    if (tripenounters == 0) {
+                                      return Text(
+                                        "S",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 80,
+                                            fontWeight: FontWeight.w300),
+                                      );  
+                                    }else if ( 5 > tripenounters  && tripenounters > 0) {
+                                      return Text(
+                                        "A",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 80,
+                                            fontWeight: FontWeight.w300),
+                                      );  
+                                    }
+                                    else if ( 9 > tripenounters  && tripenounters > 4) {
+                                      return Text(
+                                        "B",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 80,
+                                            fontWeight: FontWeight.w300),
+                                      );  
+                                    }
+                                    else if ( 15 > tripenounters  && tripenounters > 8) {
+                                      return Text(
+                                        "C",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 80,
+                                            fontWeight: FontWeight.w300),
+                                      );  
+                                    }
+                                    else {
+                                      return Text(
+                                        "D",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 80,
+                                            fontWeight: FontWeight.w300),
+                                      );  
+                                    }
+
+                                    
+                                  }),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text("Rating",
