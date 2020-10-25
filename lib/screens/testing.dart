@@ -18,9 +18,10 @@ class Testing extends StatelessWidget {
           print(snapshot);
           List<Encounter> encounters = snapshot.data;
           return ListView(
-              children: encounters
-                  .map((encounter) => Text(encounter.time.toString()))
-                  .toList());
+            children: encounters
+                .map((encounter) => Text(encounter.time.toString()))
+                .toList(),
+          );
         },
       ),
     );
