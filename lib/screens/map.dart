@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:covid_smart_app/screens/tripdata.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -204,21 +205,29 @@ class MapSampleState extends State<MapSample> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 5),
                                 child: Center(
-                                  child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "View Log",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    )),
-                                    width: MediaQuery.of(context).size.width *
-                                            0.75 /
-                                            2 -
-                                        15,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30),
-                                        color: Colors.green[200]),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => TripData()),
+  );
+                                    },
+                                    child: Container(
+                                      child: Center(
+                                          child: Text(
+                                        "View Log",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      )),
+                                      width: MediaQuery.of(context).size.width *
+                                              0.75 /
+                                              2 -
+                                          15,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30),
+                                          color: Colors.green[200]),
+                                    ),
                                   ),
                                 ),
                               ),
