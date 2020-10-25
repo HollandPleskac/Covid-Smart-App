@@ -188,7 +188,7 @@ class TripActions extends StatelessWidget {
                             "Trip Time: " +
                                 DateTime.now()
                                     .difference(trip.start)
-                                    .inDays
+                                    .inMinutes
                                     .toString() +
                                 "min",
                             style: TextStyle(color: Colors.white, fontSize: 20),
