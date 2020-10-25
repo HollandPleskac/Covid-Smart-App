@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:random_string/random_string.dart';
 
 class Encounter {
   String id;
@@ -15,7 +16,7 @@ class Encounter {
 
   factory Encounter.fromMap(DocumentSnapshot snapshot, String id) {
     return Encounter(
-      id: id ?? '',
+      id: id ?? randomAlphaNumeric(10).toString(),
       email: snapshot['email'] ?? '',
       county: snapshot['county'] ?? '',
       time: DateTime.parse(snapshot['time'].toDate().toString()) ?? DateTime.now(),

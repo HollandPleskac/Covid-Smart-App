@@ -7,7 +7,7 @@ final _flutterBlue = FlutterBlue.instance;
 final _fire = Fire();
 
 class Blue {
-  void scan(String email) {
+  void scan(String email, String tripId) {
     List deviceids = [];
 
     // Start scanning
@@ -34,6 +34,7 @@ class Blue {
               time: DateTime.now(),
               lat: _locationData.latitude,
               lng: _locationData.longitude,
+              tripId: tripId,
             );
 
             print('${r.device.id} found! rssi: ${r.rssi}');

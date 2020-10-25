@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/encounter.dart';
@@ -16,7 +17,7 @@ class Fire {
       'encounters': 0,
     });
 
-   await _firestore.collection("Users").doc(email).update(
+    await _firestore.collection("Users").doc(email).update(
       {'current trip': id},
     );
   }
@@ -32,17 +33,19 @@ class Fire {
   }
 
   Future<void> logEncounter({
-    String county,
-    String email,
-    DateTime time,
-    double lat,
-    double lng,
+    @required String county,
+    @required String email,
+    @required DateTime time,
+    @required double lat,
+    @required double lng,
+    @required String tripId,
   }) async {
     await _firestore.collection("Logs").doc().set({
       'coords': {'lat': lng, 'lng': lat},
       'county': county,
       'email': email,
       'time': time,
+      'trip id':tripId,
     });
   }
 
@@ -50,22 +53,27 @@ class Fire {
     var ref = _firestore.collection("Logs").where('trip id', isEqualTo: tripId);
 
     return ref.snapshots().map(
-          (list) => list.docs.map((doc) =>
-            
-            Encounter.fromMap(doc, doc.id),
-          ).toList(),
+          (list) => list.docs
+              .map(
+                (doc) => Encounter.fromMap(doc, doc.id),
+              )
+              .toList(),
         );
   }
 
-  Stream<List<Encounter>> streamAllEncounters() {
-    var ref = _firestore.collection("Logs");
+  Stream<List<Encounter>> streamAllEncounters(String email) {
+    var ref = _firestore.collection("Logs").where('email', isEqualTo: email);
 
     return ref.snapshots().map(
-          (list) => list.docs.map((doc) =>
-            
-            Encounter.fromMap(doc, doc.id),
-          ).toList(),
-        );
+      (list) {
+        print('LIST : '+list.docs.toString());
+        return list.docs
+            .map(
+              (doc) => Encounter.fromMap(doc, doc.id),
+            )
+            .toList();
+      },
+    );
   }
 
   Stream<Trip> streamTrip(String tripId) {

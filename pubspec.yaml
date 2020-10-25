@@ -35,6 +35,8 @@ dependencies:
   google_maps_flutter: ^1.0.3
   flutter_blue: ^0.7.2
   location: ^3.0.0
+  random_string: ^2.1.0
+
 
 
 
