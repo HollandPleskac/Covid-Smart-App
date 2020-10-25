@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:random_string/random_string.dart';
 
 import '../models/encounter.dart';
 import '../models/trip.dart';
@@ -10,7 +11,7 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class Fire {
   Future<void> startTrip(String email) async {
-    String id = DateTime.now().toString();
+    String id = randomAlphaNumeric(10);
     await _firestore.collection("Trips").doc(id).set({
       'start': DateTime.now(),
       'end': DateTime.now(),
