@@ -33,6 +33,10 @@ dependencies:
   firebase_auth: "^0.18.1+2"
   provider: ^4.3.2+2
   google_maps_flutter: ^1.0.3
+  flutter_blue: ^0.7.2
+  location: ^3.0.0
+
+
 
 dev_dependencies:
   flutter_test:

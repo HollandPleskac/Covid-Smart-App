@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/tripdata.dart';
 import '../screens/userstats.dart';
 import '../logic/fire.dart';
+import '../logic/blue.dart';
 import '../models/trip.dart';
 import '../models/encounter.dart';
 
@@ -15,6 +16,7 @@ import 'dart:async';
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 final _fire = Fire();
+final _blue = Blue();
 
 class MapScreen extends StatefulWidget {
   @override
@@ -39,7 +41,9 @@ class MapScreenState extends State<MapScreen> {
 
   void startTrip() async {
     await _fire.startTrip(_firebaseAuth.currentUser.email);
+    _blue.scan(_firebaseAuth.currentUser.email);
     tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
+
     setState(() {});
   }
 
