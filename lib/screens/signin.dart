@@ -21,35 +21,91 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('sign in'),
-              TextFormField(
-                controller: emailController,
-                validator: (value) {
-                  if (value == null || value == '') {
-                    return 'Email cannot be blank';
-                  }
-                  return null;
-                },
+      body: ListView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
+            Center(
+              child: Text(
+                'Login',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 46,
+                    fontWeight: FontWeight.w400),
               ),
-              TextFormField(
-                controller: passwordController,
-                validator: (value) {
-                  if (value == null || value == '') {
-                    return 'Password cannot be blank';
-                  }
-                  return null;
-                },
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.10,
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Center(
+                    child: Container(
+                      color: Colors.green[100],
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            controller: emailController,
+                            decoration: InputDecoration(
+                                border: InputBorder.none, hintText: 'Email'),
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return 'Email cannot be blank';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.85,
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Center(
+                    child: Container(
+                      color: Colors.blue[100],
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: TextFormField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                border: InputBorder.none, hintText: 'Password'),
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return 'Password cannot be blank';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.85,
+                    ),
+                  ),
+                ],
               ),
-              RaisedButton(
-                child: Text('Sign In'),
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            Center(
+              child: Container(
+                child: new Material(
+                  child: new InkWell(
+                    onTap: () async {
+                      if (_formKey.currentState.validate()) {
                     String res = await _auth.signIn(
                         emailController.text, passwordController.text);
 
@@ -66,16 +122,44 @@ class _SignInState extends State<SignIn> {
                       );
                     }
                   }
-                },
+                    },
+                    child: new Container(
+                      child: Center(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.03,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Colors.transparent,
+                ),
+                height: MediaQuery.of(context).size.height * 0.06,
+                width: MediaQuery.of(context).size.width * 0.85,
+                decoration: BoxDecoration(
+                  color: Colors.pink[100],
+                  borderRadius: BorderRadius.circular(0),
+                ),
               ),
-              Text(
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.025,
+            ),
+            Text(
                 feedback,
                 style: TextStyle(color: Colors.red),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+          ],
+        ));
   }
 }
