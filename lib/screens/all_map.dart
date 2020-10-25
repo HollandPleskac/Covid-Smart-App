@@ -97,7 +97,7 @@ class LiveMap extends StatelessWidget {
                             encounter.coords['lat'],
                             encounter.coords['lng'],
                           ),
-                          radius: 50,
+                          radius: 500000000000000000000,
                           fillColor: Colors.red.withOpacity(0.5),
                           strokeWidth: 0,
                           visible: true);
