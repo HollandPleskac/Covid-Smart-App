@@ -27,7 +27,6 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen> {
   String tripId;
   Location location = new Location();
-  LocationData currentLocation;
   CameraPosition cameraPosition;
 
   Future<void> setTripId(String email) async {
@@ -70,7 +69,7 @@ class MapScreenState extends State<MapScreen> {
       getLocation().then((_) {
         setState(() {
           print('TRIP ID : ' + tripId.toString());
-          print('Location : '+ location.toString());
+          print('Camera Position : '+ cameraPosition.toString());
         });
       });
     });
@@ -283,10 +282,10 @@ class LiveMap extends StatelessWidget {
 
   final Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  // static final CameraPosition _kGooglePlex = CameraPosition(
+  //   target: LatLng(37.42796133580664, -122.085749655962),
+  //   zoom: 14.4746,
+  // );
 
   @override
   Widget build(BuildContext context) {
@@ -298,9 +297,9 @@ class LiveMap extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }
-        return GoogleMap(
+        return cameraPosition == null ? Container() : GoogleMap(
           mapType: MapType.normal,
-          initialCameraPosition: cameraPosition == null ? _kGooglePlex : cameraPosition,
+          initialCameraPosition: cameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
