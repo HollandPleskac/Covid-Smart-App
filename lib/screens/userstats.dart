@@ -111,7 +111,7 @@ class _UserStatsState extends State<UserStats> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("8.5",
+                          Text("C",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 80,
