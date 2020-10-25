@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './all_map.dart';
+import 'map.dart';
 
 class UserStats extends StatefulWidget {
   @override
@@ -222,6 +223,17 @@ class _UserStatsState extends State<UserStats> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapScreen()),
+                            );
+        },
+        child: Icon(Icons.arrow_back_ios,color: Colors.white,),
+        backgroundColor: Colors.black,
       ),
     );
   }

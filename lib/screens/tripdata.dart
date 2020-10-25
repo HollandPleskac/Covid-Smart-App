@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:covid_smart_app/models/trip.dart';
+import 'package:covid_smart_app/screens/map.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../logic/fire.dart';
@@ -304,6 +305,17 @@ class _TripDataState extends State<TripData> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapScreen()),
+                            );
+        },
+        child: Icon(Icons.arrow_back_ios,color: Colors.white,),
+        backgroundColor: Colors.black,
       ),
     );
   }
