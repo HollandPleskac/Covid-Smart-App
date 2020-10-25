@@ -57,6 +57,17 @@ class Fire {
         );
   }
 
+  Stream<List<Encounter>> streamAllEncounters() {
+    var ref = _firestore.collection("Logs");
+
+    return ref.snapshots().map(
+          (list) => list.docs.map((doc) =>
+            
+            Encounter.fromMap(doc, doc.id),
+          ).toList(),
+        );
+  }
+
   Stream<Trip> streamTrip(String tripId) {
     return _firestore.collection('Trips').doc(tripId).snapshots().map((snap) {
       return Trip.fromMap(snap.data(), snap.id);
