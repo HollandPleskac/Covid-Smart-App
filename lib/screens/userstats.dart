@@ -1,5 +1,9 @@
+import 'package:covid_smart_app/screens/signin.dart';
 import 'package:flutter/material.dart';
 import './all_map.dart';
+import '../logic/auth.dart';
+
+final _auth = Auth();
 
 class UserStats extends StatefulWidget {
   @override
@@ -41,7 +45,13 @@ class _UserStatsState extends State<UserStats> {
                     ),
                   );
                 },
-              )
+              ),
+              IconButton(
+                  icon: Icon(Icons.login),
+                  onPressed: () {
+                    _auth.signOut();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+                  }),
             ],
           ),
           SizedBox(

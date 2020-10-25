@@ -61,6 +61,7 @@ class MapScreenState extends State<MapScreen> {
     await _fire.startTrip(_firebaseAuth.currentUser.email);
     
     var currentTripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
+    tripId = currentTripId;
     _blue.scan(_firebaseAuth.currentUser.email,currentTripId);
     setState(() {});
   }
