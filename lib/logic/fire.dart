@@ -51,7 +51,7 @@ class Fire {
       'email': email,
       'time': time,
       'trip id':tripId,
-      'street':_blue.getStreet(),
+      'street': 'street name',
     });
   }
 
