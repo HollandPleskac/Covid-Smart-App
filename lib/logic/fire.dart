@@ -42,7 +42,7 @@ class Fire {
     @required String tripId,
   }) async {
     await _firestore.collection("Logs").doc().set({
-      'coords': {'lat': lng, 'lng': lat},
+      'coords': {'lat': lat, 'lng': lng},
       'county': county,
       'email': email,
       'time': time,
