@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:location/location.dart';
+import 'package:quiver/async.dart';
 
 import '../screens/tripdata.dart';
 import '../screens/userstats.dart';
@@ -56,7 +57,7 @@ class MapScreenState extends State<MapScreen> {
 
   void startTrip() async {
     await _fire.startTrip(_firebaseAuth.currentUser.email);
-    _blue.scan(_firebaseAuth.currentUser.email,tripId);
+    _blue.scan(_firebaseAuth.currentUser.email, tripId);
     tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
 
     setState(() {});
@@ -135,18 +136,52 @@ class MapScreenState extends State<MapScreen> {
   }
 }
 
-class TripActions extends StatelessWidget {
+class TripActions extends StatefulWidget {
   final String tripId;
   final Function endTrip;
 
   TripActions(this.tripId, this.endTrip);
+
+  @override
+  _TripActionsState createState() => _TripActionsState();
+}
+
+class _TripActionsState extends State<TripActions> {
+  Timer _timer;
+  int _start = 0;
+  void startTimer() {
+    const oneMin = const Duration(minutes: 1);
+    _timer = new Timer.periodic(
+      oneMin,
+      (Timer timer) => setState(
+        () {
+          _start = _start + 1;
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _fire.streamTrip(tripId),
+      stream: _fire.streamTrip(widget.tripId),
       builder: (context, snapshot) {
         Trip trip = snapshot.data;
         int encounters = trip.encounters == null ? 0 : trip.encounters;
+        print('start trip : ' +
+            DateTime.now().difference(trip.start).inSeconds.toString());
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }
@@ -185,12 +220,7 @@ class TripActions extends StatelessWidget {
                         child: Container(
                           child: Center(
                               child: Text(
-                            "Trip Time: " +
-                                DateTime.now()
-                                    .difference(trip.start)
-                                    .inMinutes
-                                    .toString() +
-                                "min",
+                            "Trip Time: " + _start.toString() + "min",
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )),
                           constraints:
@@ -230,7 +260,7 @@ class TripActions extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.red[300]),
                         ),
-                        onTap: () async => await endTrip(),
+                        onTap: () async => await widget.endTrip(),
                       ),
                     ),
                   ),
@@ -334,6 +364,7 @@ class LiveMap extends StatelessWidget {
 }
 
 class BottomNav extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Padding(

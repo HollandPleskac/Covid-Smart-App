@@ -10,6 +10,7 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final _fire = Fire();
 
 class TripData extends StatefulWidget {
+  
   @override
   _TripDataState createState() => _TripDataState();
 }
