@@ -46,6 +46,12 @@ class MapScreenState extends State<MapScreen> {
     await _fire.endTrip(_firebaseAuth.currentUser.email, tripId);
     tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
     setState(() {});
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TripData(),
+      ),
+    );
   }
 
   void startTrip() async {
@@ -69,7 +75,7 @@ class MapScreenState extends State<MapScreen> {
       getLocation().then((_) {
         setState(() {
           print('TRIP ID : ' + tripId.toString());
-          print('Camera Position : '+ cameraPosition.toString());
+          print('Camera Position : ' + cameraPosition.toString());
         });
       });
     });
@@ -139,7 +145,6 @@ class TripActions extends StatelessWidget {
     return StreamBuilder(
       stream: _fire.streamTrip(tripId),
       builder: (context, snapshot) {
-        
         Trip trip = snapshot.data;
         int encounters = trip.encounters == null ? 0 : trip.encounters;
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -278,7 +283,7 @@ class LiveMap extends StatelessWidget {
   final String tripId;
   final CameraPosition cameraPosition;
 
-  LiveMap(this.tripId,this.cameraPosition);
+  LiveMap(this.tripId, this.cameraPosition);
 
   final Completer<GoogleMapController> _controller = Completer();
 
@@ -297,30 +302,32 @@ class LiveMap extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }
-        return cameraPosition == null ? Container() : GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: cameraPosition,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          circles: Set.from(
-            encounters.map(
-              (encounter) {
-                print(encounter.coords);
-                return Circle(
-                    circleId: CircleId(encounter.id),
-                    center: LatLng(
-                      encounter.coords['lat'],
-                      encounter.coords['lng'],
-                    ),
-                    radius: 50,
-                    fillColor: Colors.red.withOpacity(0.5),
-                    strokeWidth: 0,
-                    visible: true);
-              },
-            ),
-          ),
-        );
+        return cameraPosition == null
+            ? Container()
+            : GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: cameraPosition,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                circles: Set.from(
+                  encounters.map(
+                    (encounter) {
+                      print(encounter.coords);
+                      return Circle(
+                          circleId: CircleId(encounter.id),
+                          center: LatLng(
+                            encounter.coords['lat'],
+                            encounter.coords['lng'],
+                          ),
+                          radius: 50,
+                          fillColor: Colors.red.withOpacity(0.5),
+                          strokeWidth: 0,
+                          visible: true);
+                    },
+                  ),
+                ),
+              );
       },
     );
   }
