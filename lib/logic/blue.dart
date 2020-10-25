@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:location/location.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'fire.dart';
 
 final _flutterBlue = FlutterBlue.instance;
@@ -44,5 +46,29 @@ class Blue {
         }
       }
     });
+  }
+
+
+   Future<String> getStreet() async {
+    Position position = await Geolocator.getCurrentPosition();
+
+    print('location: ${position.latitude}, ${position.longitude}');
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+   var first = addresses.first;
+   
+    print("${first.featureName} : ${first.addressLine}");
+
+    print("City : ${first.locality}");
+
+   
+
+    var location = first.addressLine;
+
+    var street = location.substring(0, location.indexOf(','));
+
+    return street;
+ 
   }
 }

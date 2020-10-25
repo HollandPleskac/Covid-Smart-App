@@ -6,6 +6,9 @@ import 'package:random_string/random_string.dart';
 
 import '../models/encounter.dart';
 import '../models/trip.dart';
+import './blue.dart';
+
+final _blue = Blue();
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -16,6 +19,7 @@ class Fire {
       'start': DateTime.now(),
       'end': DateTime.now(),
       'encounters': 0,
+      'email':email,
     });
 
     await _firestore.collection("Users").doc(email).update(
@@ -29,7 +33,7 @@ class Fire {
     });
 
     await _firestore.collection('Trips').doc(tripId).update({
-      'end trip': DateTime.now(),
+      'end': DateTime.now(),
     });
   }
 
@@ -47,6 +51,7 @@ class Fire {
       'email': email,
       'time': time,
       'trip id':tripId,
+      'street':_blue.getStreet(),
     });
   }
 

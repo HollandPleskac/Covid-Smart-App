@@ -36,6 +36,8 @@ dependencies:
   flutter_blue: ^0.7.2
   location: ^3.0.0
   random_string: ^2.1.0
+  geocoder: ^0.2.1
+  geolocator: ^6.1.1
 
 
 
