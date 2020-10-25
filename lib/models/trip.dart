@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Trip {
   String id;
   String email;
-  int time;
+  DateTime start;
   int encounters;
 
   Trip({
     this.id,
     this.email,
-    this.time,
+    this.start,
     this.encounters,
   });
 
@@ -17,7 +17,7 @@ class Trip {
     return Trip(
       id: id ?? '',
       email: data['email'] ?? '',
-      time: data['time'] ?? 0,
+      start: DateTime.parse(data['start'].toDate().toString()) ?? DateTime.now(),
       encounters: data['encounters'] ?? 0,
     );
   }

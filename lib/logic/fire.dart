@@ -8,25 +8,25 @@ import '../models/trip.dart';
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class Fire {
-  Future<void> createTrip(String email) {
+  Future<void> startTrip(String email) async {
     String id = DateTime.now().toString();
-    _firestore.collection("Trips").doc(id).set({
+    await _firestore.collection("Trips").doc(id).set({
       'start': DateTime.now(),
       'end': null,
       'encounters': 0,
     });
 
-    _firestore.collection("Users").doc(email).update(
+   await _firestore.collection("Users").doc(email).update(
       {'current trip': id},
     );
   }
 
-  Future<void> endTrip(String email, String tripId) {
-    _firestore.collection('Users').doc(email).update({
+  Future<void> endTrip(String email, String tripId) async {
+    await _firestore.collection('Users').doc(email).update({
       'current trip': '',
     });
 
-    _firestore.collection('Trips').doc(tripId).update({
+    await _firestore.collection('Trips').doc(tripId).update({
       'end trip': DateTime.now(),
     });
   }

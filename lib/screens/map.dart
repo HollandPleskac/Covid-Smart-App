@@ -16,19 +16,31 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 final _fire = Fire();
 
-class MapSample extends StatefulWidget {
+class MapScreen extends StatefulWidget {
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapScreen> createState() => MapScreenState();
 }
 
-class MapSampleState extends State<MapSample> {
+class MapScreenState extends State<MapScreen> {
   String tripId;
-
-  
 
   Future<void> setTripId(String email) async {
     String id = await _fire.getTripId(email);
     tripId = id;
+  }
+
+  void endTrip() async {
+    await _fire.endTrip(_firebaseAuth.currentUser.email, tripId);
+    tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
+    setState(() {
+      
+    });
+  }
+
+  void startTrip() async {
+    await _fire.startTrip(_firebaseAuth.currentUser.email);
+    tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
+    setState(() {});
   }
 
   @override
@@ -65,8 +77,9 @@ class MapSampleState extends State<MapSample> {
                           sigmaY: 20.0,
                         ),
                         child: Container(
-                          child:
-                              tripId == "" ? StartTrip() : TripActions(tripId),
+                          child: tripId == ""
+                              ? StartTrip(() => startTrip())
+                              : TripActions(tripId, () => endTrip()),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: 130,
                           decoration: BoxDecoration(
@@ -95,14 +108,15 @@ class MapSampleState extends State<MapSample> {
 
 class TripActions extends StatelessWidget {
   final String tripId;
+  final Function endTrip;
 
-  TripActions(this.tripId);
+  TripActions(this.tripId, this.endTrip);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: _fire.streamTrip(tripId),
       builder: (context, snapshot) {
-        var trip = snapshot.data;
+        Trip trip = snapshot.data;
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }
@@ -141,7 +155,12 @@ class TripActions extends StatelessWidget {
                         child: Container(
                           child: Center(
                               child: Text(
-                            "Trip Time: " + trip.time.toString() + "min",
+                            "Trip Time: " +
+                                DateTime.now()
+                                    .difference(trip.start)
+                                    .inDays
+                                    .toString() +
+                                "min",
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )),
                           constraints:
@@ -181,9 +200,7 @@ class TripActions extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.red[300]),
                         ),
-                        onLongPress: () {
-                          _fire.endTrip(_firebaseAuth.currentUser.email, tripId);
-                        },
+                        onTap: () async => await endTrip(),
                       ),
                     ),
                   ),
@@ -216,7 +233,9 @@ class TripActions extends StatelessWidget {
 }
 
 class StartTrip extends StatelessWidget {
+  Function startTrip;
 
+  StartTrip(this.startTrip);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -224,9 +243,7 @@ class StartTrip extends StatelessWidget {
       child: FlatButton(
         child: Text('Start'),
         color: Colors.blue[300],
-        onPressed: () {
-          _fire.createTrip(_firebaseAuth.currentUser.email);
-        },
+        onPressed:() async => await startTrip(),
       ),
     );
   }

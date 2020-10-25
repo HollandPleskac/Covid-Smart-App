@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MapSample(),
+                          builder: (context) => MapScreen(),
                         ),
                       );
                     }
