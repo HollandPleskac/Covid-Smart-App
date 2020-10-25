@@ -45,13 +45,14 @@ class MapScreenState extends State<MapScreen> {
   }
 
   void endTrip() async {
+    String tripIdPrevious= tripId;
     await _fire.endTrip(_firebaseAuth.currentUser.email, tripId);
     tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
     setState(() {});
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TripData(tripId),
+        builder: (context) => TripData(tripIdPrevious),
       ),
     );
   }

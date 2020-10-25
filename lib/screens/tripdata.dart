@@ -19,22 +19,7 @@ class TripData extends StatefulWidget {
 }
 
 class _TripDataState extends State<TripData> {
-  String tripId;
-
-  Future<void> setTripId(String email) async {
-    String id = await _fire.getTripId(email);
-    tripId = id;
-  }
-
-  @override
-  void initState() {
-    setTripId(_firebaseAuth.currentUser.email).then((_) {
-      setState(() {
-        print('TRIP ID : ' + tripId.toString());
-      });
-    });
-    super.initState();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +53,10 @@ class _TripDataState extends State<TripData> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          tripId == ""
+                          widget.tripId == ""
                               ? NAText()
                               : StreamBuilder(
-                                  stream: _fire.streamTrip(tripId),
+                                  stream: _fire.streamTrip(widget.tripId),
                                   builder: (context, snapshot) {
                                     Trip trip = snapshot.data;
                                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -110,10 +95,10 @@ class _TripDataState extends State<TripData> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          tripId == ""
+                          widget.tripId == ""
                               ? NAText()
                               : StreamBuilder(
-                                  stream: _fire.streamTrip(tripId),
+                                  stream: _fire.streamTrip(widget.tripId),
                                   builder: (context, snapshot) {
                                     Trip trip = snapshot.data;
                                     return Text(
@@ -195,10 +180,10 @@ class _TripDataState extends State<TripData> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          tripId == ""
+                          widget.tripId == ""
                               ? NAText()
                               : StreamBuilder(
-                                  stream: _fire.streamTrip(tripId),
+                                  stream: _fire.streamTrip(widget.tripId),
                                   builder: (context, snapshot) {
                                     Trip trip = snapshot.data;
                                     int time = trip == null
@@ -241,10 +226,10 @@ class _TripDataState extends State<TripData> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          tripId == ""
+                          widget.tripId == ""
                               ? NAText()
                               : StreamBuilder(
-                                  stream: _fire.streamTrip(tripId),
+                                  stream: _fire.streamTrip(widget.tripId),
                                   builder: (context, snapshot) {
                                     return Text(
                                       "7",
