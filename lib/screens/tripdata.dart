@@ -70,6 +70,9 @@ class _TripDataState extends State<TripData> {
                                   stream: _fire.streamTrip(tripId),
                                   builder: (context, snapshot) {
                                     Trip trip = snapshot.data;
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return Container();
+                                    }
                                     return Text(
                                       trip.encounters.toString(),
                                       style: TextStyle(
@@ -198,7 +201,7 @@ class _TripDataState extends State<TripData> {
                                         ? 0
                                         : DateTime.now()
                                             .difference(trip.start)
-                                            .inDays;
+                                            .inMinutes;
 
                                     return Text(
                                       time.toString() + 'm',
