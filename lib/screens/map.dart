@@ -60,7 +60,8 @@ class MapSampleState extends State<MapSample> {
                           sigmaY: 20.0,
                         ),
                         child: Container(
-                          child: TripActions(tripId),
+                          // child: TripActions(tripId),
+                          child: StartTrip(),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: 130,
                           decoration: BoxDecoration(
