@@ -12,7 +12,7 @@ class Fire {
     String id = DateTime.now().toString();
     await _firestore.collection("Trips").doc(id).set({
       'start': DateTime.now(),
-      'end': null,
+      // 'end': null,
       'encounters': 0,
     });
 
