@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:location/location.dart';
 
 import '../screens/tripdata.dart';
 import '../screens/userstats.dart';
@@ -25,18 +26,27 @@ class MapScreen extends StatefulWidget {
 
 class MapScreenState extends State<MapScreen> {
   String tripId;
+  Location location = new Location();
+  LocationData currentLocation;
+  CameraPosition cameraPosition;
 
   Future<void> setTripId(String email) async {
     String id = await _fire.getTripId(email);
     tripId = id;
   }
 
+  Future<void> getLocation() async {
+    LocationData _locationData = await location.getLocation();
+    cameraPosition = CameraPosition(
+      target: LatLng(_locationData.latitude, _locationData.longitude),
+      zoom: 14.4746,
+    );
+  }
+
   void endTrip() async {
     await _fire.endTrip(_firebaseAuth.currentUser.email, tripId);
     tripId = await _fire.getTripId(_firebaseAuth.currentUser.email);
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   void startTrip() async {
@@ -49,9 +59,19 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
+    //  location.onLocationChanged.listen((result) {
+    //   setState(() {
+    //     print('New Location : '+result.toString());
+    //     currentLocation = result;
+    //   });
+    // });
+
     setTripId(_firebaseAuth.currentUser.email).then((_) {
-      setState(() {
-        print('TRIP ID : ' + tripId.toString());
+      getLocation().then((_) {
+        setState(() {
+          print('TRIP ID : ' + tripId.toString());
+          print('Location : '+ location.toString());
+        });
       });
     });
 
@@ -64,7 +84,7 @@ class MapScreenState extends State<MapScreen> {
       body: Stack(
         children: [
           // google map
-          LiveMap(tripId),
+          LiveMap(tripId, cameraPosition),
           // overlay over the google map
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +140,9 @@ class TripActions extends StatelessWidget {
     return StreamBuilder(
       stream: _fire.streamTrip(tripId),
       builder: (context, snapshot) {
+        
         Trip trip = snapshot.data;
+        int encounters = trip.encounters == null ? 0 : trip.encounters;
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }
@@ -139,7 +161,7 @@ class TripActions extends StatelessWidget {
                         child: Container(
                           child: Center(
                               child: Text(
-                            "Encounters: " + trip.encounters.toString(),
+                            "Encounters: " + encounters.toString(),
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )),
                           constraints:
@@ -247,7 +269,7 @@ class StartTrip extends StatelessWidget {
       child: FlatButton(
         child: Text('Start'),
         color: Colors.blue[300],
-        onPressed:() async => await startTrip(),
+        onPressed: () async => await startTrip(),
       ),
     );
   }
@@ -255,8 +277,9 @@ class StartTrip extends StatelessWidget {
 
 class LiveMap extends StatelessWidget {
   final String tripId;
+  final CameraPosition cameraPosition;
 
-  LiveMap(this.tripId);
+  LiveMap(this.tripId,this.cameraPosition);
 
   final Completer<GoogleMapController> _controller = Completer();
 
@@ -277,7 +300,7 @@ class LiveMap extends StatelessWidget {
         }
         return GoogleMap(
           mapType: MapType.normal,
-          initialCameraPosition: _kGooglePlex,
+          initialCameraPosition: cameraPosition == null ? _kGooglePlex : cameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
