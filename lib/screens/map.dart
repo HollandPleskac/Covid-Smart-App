@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:covid_smart_app/screens/tripdata.dart';
+import 'package:covid_smart_app/screens/userstats.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -184,21 +185,29 @@ class MapSampleState extends State<MapSample> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 5),
                                 child: Center(
-                                  child: Container(
-                                    child: Center(
-                                        child: Text(
-                                      "User Stats",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    )),
-                                    width: MediaQuery.of(context).size.width *
-                                            0.75 /
-                                            2 -
-                                        15,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30),
-                                        color: Colors.purple[200]),
+                                  child: GestureDetector(
+                                     onTap: (){
+                                      Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => UserStats()),
+  );
+                                    },
+                                    child: Container(
+                                      child: Center(
+                                          child: Text(
+                                        "User Stats",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      )),
+                                      width: MediaQuery.of(context).size.width *
+                                              0.75 /
+                                              2 -
+                                          15,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30),
+                                          color: Colors.purple[200]),
+                                    ),
                                   ),
                                 ),
                               ),
