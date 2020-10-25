@@ -258,7 +258,7 @@ class _TripActionsState extends State<TripActions> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LogView()),
+                                  builder: (context) => LogView(widget.tripId)),
                             );
                         },
                         child: Container(
