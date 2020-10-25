@@ -51,7 +51,7 @@ class MapScreenState extends State<MapScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TripData(),
+        builder: (context) => TripData(tripId),
       ),
     );
   }
