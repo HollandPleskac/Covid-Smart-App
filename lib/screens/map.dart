@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:covid_smart_app/screens/list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -185,107 +186,102 @@ class _TripActionsState extends State<TripActions> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container();
         }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Center(
-                      child: Expanded(
-                        child: Container(
-                          child: Center(
-                              child: Text(
-                            "Encounters: " + encounters.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                  Expanded(
+                          child: Container(
+                            child: Center(
+                                child: Text(
+                              "Encounters: " + encounters.toString(),
+                                overflow: TextOverflow.fade,
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                            )),
+                            
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[700]),
                           )),
-                          constraints:
-                              BoxConstraints(minWidth: 100, maxWidth: 210),
-                          height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[700]),
+                          Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Center(
+                        child: GestureDetector(
+                          child: Container(
+                            child: Center(
+                              child: Text(
+                                "End Trip",
+                                
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 20),
+                              ),
+                            ),
+                            width:
+                                MediaQuery.of(context).size.width * 0.75 / 2 - 15,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.red[300]),
+                          ),
+                          onTap: () async => await widget.endTrip(),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Center(
-                      child: Expanded(
+                ],
+              ),
+              SizedBox(height: 10,),
+              Row(
+                children: [
+                  Expanded(
                         child: Container(
                           child: Center(
                               child: Text(
                             "Trip Time: " + _start.toString() + "min",
+                                overflow: TextOverflow.fade,
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           )),
-                          constraints:
-                              BoxConstraints(minWidth: 100, maxWidth: 210),
                           height: 50,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.grey[700]),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
+                      Padding(
+                    padding: const EdgeInsets.only(left: 10),
                     child: Center(
                       child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LogView()),
+                            );
+                        },
                         child: Container(
                           child: Center(
-                            child: Text(
-                              "End Trip",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
+                              child: Text(
+                            "View Log",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )),
                           width:
                               MediaQuery.of(context).size.width * 0.75 / 2 - 15,
                           height: 50,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.red[300]),
+                              color: Colors.deepOrange[300]),
                         ),
-                        onTap: () async => await widget.endTrip(),
+                        
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Center(
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "Pause Trip",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                        width:
-                            MediaQuery.of(context).size.width * 0.75 / 2 - 15,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.deepOrange[300]),
-                      ),
-                    ),
-                  ),
+                
                 ],
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         );
       },
     );
@@ -298,12 +294,19 @@ class StartTrip extends StatelessWidget {
   StartTrip(this.startTrip);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(15),
-      child: FlatButton(
-        child: Text('Start'),
-        color: Colors.blue[300],
-        onPressed: () async => await startTrip(),
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Container(
+        child: FlatButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+          child: Text(
+            'Start',
+            style: TextStyle(
+                color: Colors.white, fontSize: 35, fontWeight: FontWeight.w400),
+          ),
+          color: Colors.blue[200],
+          onPressed: () async => await startTrip(),
+        ),
       ),
     );
   }
@@ -383,7 +386,7 @@ class BottomNav extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 5),
+                      padding: const EdgeInsets.only(right: 0),
                       child: Center(
                         child: GestureDetector(
                           onTap: () {
@@ -411,6 +414,7 @@ class BottomNav extends StatelessWidget {
                         ),
                       ),
                     ),
+                    /*
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Center(
@@ -440,9 +444,10 @@ class BottomNav extends StatelessWidget {
                         ),
                       ),
                     ),
+                    */
                   ],
                 ),
-                width: MediaQuery.of(context).size.width * 0.75,
+                width: MediaQuery.of(context).size.width * 0.4-5,
                 height: 70,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(90),
