@@ -47,26 +47,27 @@ class _SignInState extends State<SignIn> {
                 },
               ),
               RaisedButton(
-                  child: Text('Sign In'),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      String res = await _auth.signIn(
-                          emailController.text, passwordController.text);
+                child: Text('Sign In'),
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    String res = await _auth.signIn(
+                        emailController.text, passwordController.text);
 
-                      if (feedback != 'Signed in') {
-                        setState(() {
-                          feedback = res;
-                        });
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MapSample(),
-                          ),
-                        );
-                      }
+                    if (res != 'Signed in') {
+                      setState(() {
+                        feedback = res;
+                      });
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapSample(),
+                        ),
+                      );
                     }
-                  }),
+                  }
+                },
+              ),
               Text(
                 feedback,
                 style: TextStyle(color: Colors.red),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../screens/tripdata.dart';
 import '../screens/userstats.dart';
@@ -10,6 +11,8 @@ import '../models/trip.dart';
 import '../models/encounter.dart';
 
 import 'dart:async';
+
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 final _fire = Fire();
 
@@ -21,6 +24,8 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   String tripId;
 
+  
+
   Future<void> setTripId(String email) async {
     String id = await _fire.getTripId(email);
     tripId = id;
@@ -28,7 +33,7 @@ class MapSampleState extends State<MapSample> {
 
   @override
   void initState() {
-    setTripId('test@gmail.com').then((_) {
+    setTripId(_firebaseAuth.currentUser.email).then((_) {
       setState(() {
         print('TRIP ID : ' + tripId.toString());
       });
@@ -60,8 +65,8 @@ class MapSampleState extends State<MapSample> {
                           sigmaY: 20.0,
                         ),
                         child: Container(
-                          child: tripId == "" ? StartTrip() : TripActions(tripId),
-                         
+                          child:
+                              tripId == "" ? StartTrip() : TripActions(tripId),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: 130,
                           decoration: BoxDecoration(
@@ -98,6 +103,9 @@ class TripActions extends StatelessWidget {
       stream: _fire.streamTrip(tripId),
       builder: (context, snapshot) {
         var trip = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container();
+        }
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -157,18 +165,25 @@ class TripActions extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Center(
-                      child: Container(
-                        child: Center(
+                      child: GestureDetector(
+                        child: Container(
+                          child: Center(
                             child: Text(
-                          "End Trip",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                        width:
-                            MediaQuery.of(context).size.width * 0.75 / 2 - 15,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.red[300]),
+                              "End Trip",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ),
+                          width:
+                              MediaQuery.of(context).size.width * 0.75 / 2 - 15,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.red[300]),
+                        ),
+                        onLongPress: () {
+                          _fire.endTrip(_firebaseAuth.currentUser.email, tripId);
+                        },
                       ),
                     ),
                   ),
@@ -201,6 +216,7 @@ class TripActions extends StatelessWidget {
 }
 
 class StartTrip extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -209,7 +225,7 @@ class StartTrip extends StatelessWidget {
         child: Text('Start'),
         color: Colors.blue[300],
         onPressed: () {
-          _fire.createTrip('test@gmail.com');
+          _fire.createTrip(_firebaseAuth.currentUser.email);
         },
       ),
     );
@@ -235,7 +251,9 @@ class LiveMap extends StatelessWidget {
       builder: (context, snapshot) {
         List<Encounter> encounters = snapshot.data;
 
-        print('ENCOUNTERS ++ ' + encounters.toString());
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container();
+        }
         return GoogleMap(
           mapType: MapType.normal,
           initialCameraPosition: _kGooglePlex,
