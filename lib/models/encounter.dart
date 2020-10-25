@@ -14,8 +14,8 @@ class Encounter {
       id: id ?? '',
       email: snapshot['email'] ?? '',
       county: snapshot['county'] ?? '',
-      time: DateTime.parse(snapshot['time'].toDate().toString()) ?? '',
-      coords: snapshot['coords'] ?? '',
+      time: DateTime.parse(snapshot['time'].toDate().toString()) ?? DateTime.now(),
+      coords: snapshot['coords'] ?? {},
     );
   }
 }

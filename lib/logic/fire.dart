@@ -24,11 +24,12 @@ class Fire {
   Stream<List<Encounter>> streamEncounters() {
     var ref = _firestore.collection("Logs");
 
-    return ref.snapshots().map((list) 
-      
-      => list.docs.map(
-        (doc) => Encounter.fromMap(doc, doc.id),
-      ).toList(),
-    );
+    return ref.snapshots().map(
+          (list) => list.docs
+              .map(
+                (doc) => Encounter.fromMap(doc, doc.id),
+              )
+              .toList(),
+        );
   }
 }

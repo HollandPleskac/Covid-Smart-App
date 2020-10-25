@@ -14,12 +14,13 @@ class Testing extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: _fire.streamEncounters(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           print(snapshot);
           List<Encounter> encounters = snapshot.data;
           return ListView(
-              children:
-                  encounters.map((encounter) => Text(encounter.id)).toList());
+              children: encounters
+                  .map((encounter) => Text(encounter.time.toString()))
+                  .toList());
         },
       ),
     );
