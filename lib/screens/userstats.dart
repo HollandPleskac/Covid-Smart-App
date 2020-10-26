@@ -1,10 +1,14 @@
 import 'package:covid_smart_app/screens/signin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './all_map.dart';
 import '../logic/auth.dart';
 
 import 'package:covid_smart_app/screens/map.dart';
 
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final _auth = Auth();
 
 class UserStats extends StatefulWidget {
@@ -52,7 +56,8 @@ class _UserStatsState extends State<UserStats> {
                   icon: Icon(Icons.login),
                   onPressed: () {
                     _auth.signOut();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignIn()));
                   }),
             ],
           ),
@@ -73,10 +78,11 @@ class _UserStatsState extends State<UserStats> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("Tracy",
+                          Text("San Joaquin",
+                              overflow: TextOverflow.fade,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 80,
+                                  fontSize: 55,
                                   fontWeight: FontWeight.w300)),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
@@ -111,7 +117,7 @@ class _UserStatsState extends State<UserStats> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("C",
+                          Text("A",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 80,
@@ -141,18 +147,35 @@ class _UserStatsState extends State<UserStats> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("6",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 80,
-                                  fontWeight: FontWeight.w300)),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text("Total Trips",
+                          StreamBuilder(
+                            stream: _firestore
+                                .collection('Trips')
+                                .where('email',
+                                    isEqualTo: _firebaseAuth.currentUser.email)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Container();
+                              }
+                              return Text(
+                                snapshot.data.docs.length.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w500)),
+                                    fontSize: 80,
+                                    fontWeight: FontWeight.w300),
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              "Total Trips",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ),
                         ],
                       ),
@@ -179,14 +202,27 @@ class _UserStatsState extends State<UserStats> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("16",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 80,
-                                  fontWeight: FontWeight.w300)),
+                          StreamBuilder(
+                            stream: _firestore
+                                .collection('Trips')
+                                .where('email',
+                                    isEqualTo: _firebaseAuth.currentUser.email)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Container();
+                              }
+                              return Text(snapshot.data.docs.length.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 80,
+                                      fontWeight: FontWeight.w300));
+                            },
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
-                            child: Text("Trip Average",
+                            child: Text("Todays Trips",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 22,
@@ -209,11 +245,25 @@ class _UserStatsState extends State<UserStats> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("73",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 80,
-                                  fontWeight: FontWeight.w300)),
+                          StreamBuilder(
+                            stream: _firestore
+                                .collection('Logs')
+                                .where('email',
+                                    isEqualTo: _firebaseAuth.currentUser.email)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Container();
+                              }
+                              return Text(
+                                snapshot.data.docs.length.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 80,
+                                    fontWeight: FontWeight.w300),
+                              );
+                            },
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text("Total Encounters",
@@ -238,12 +288,14 @@ class _UserStatsState extends State<UserStats> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapScreen()),
-                            );
+            context,
+            MaterialPageRoute(builder: (context) => MapScreen()),
+          );
         },
-        child: Icon(Icons.arrow_back_ios,color: Colors.white,),
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: Colors.white,
+        ),
         backgroundColor: Colors.black,
       ),
     );

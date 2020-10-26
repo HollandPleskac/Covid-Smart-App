@@ -142,10 +142,11 @@ class _TripDataState extends State<TripData> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("Tracy",
+                          Text("San Joaquin",
+                          overflow: TextOverflow.fade,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 80,
+                                  fontSize: 55,
                                   fontWeight: FontWeight.w300)),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
@@ -275,7 +276,7 @@ class _TripDataState extends State<TripData> {
                                     }
                                     else {
                                       return Text(
-                                        "D",
+                                        "A",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 80,

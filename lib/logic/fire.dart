@@ -53,6 +53,8 @@ class Fire {
       'trip id':tripId,
       'street': 'street name',
     });
+
+    await _firestore.collection("Trips").doc(tripId).update({"encounters":FieldValue.increment(1)});
   }
 
   Stream<List<Encounter>> streamEncounters(String tripId) {
