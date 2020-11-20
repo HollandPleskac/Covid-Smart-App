@@ -1,16 +1,3 @@
 # covid_smart_app
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Our app and website have a variety of features. When you press the arm button on the app, it will start collecting data via Bluetooth. Whenever you walk past someone it logs it so you know how many encounters you have had. As well as logging the number of encounters, it gets your exact location as well, so it plots it on a map you can later see on the website. It will tell you exactly how many encounters you have had in one location. Depending on how many encounters you have had per log, an icon will be shown(Checkmark, Warning, Danger), depending on how many encounters you have had per log. This will allow you to know if you should get tested or not depending on how many encounters you have had. On the website client, you can see where you had your encounters on a map, as well as how many encounters you have has per log. For example if I went on a trip to the grocery store, it will log all the encounters I had for that trip. And on the map, it will display the grocery store. We also have COVID statistics per country, as well as the latest health-related news.
