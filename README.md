@@ -1,3 +1,8 @@
 # covid_smart_app
 
+Our team created an app that helps users social distance and make smart social distancing decisions. The COVID Smart app uses Bluetooth RSSI signals to determine if a user is within a 6 feet distance of another person. The app keeps track of all your encounters live in a google map! COVID Smart vibrates to let you know if it has detected an encounter.  The platform lets you create trips to track your social distancing over time, and assigns you a rating after you have completed your trip.  COVID Smart comes as an app and a website.
+
 Our app and website have a variety of features. When you press the arm button on the app, it will start collecting data via Bluetooth. Whenever you walk past someone it logs it so you know how many encounters you have had. As well as logging the number of encounters, it gets your exact location as well, so it plots it on a map you can later see on the website. It will tell you exactly how many encounters you have had in one location. Depending on how many encounters you have had per log, an icon will be shown(Checkmark, Warning, Danger), depending on how many encounters you have had per log. This will allow you to know if you should get tested or not depending on how many encounters you have had. On the website client, you can see where you had your encounters on a map, as well as how many encounters you have has per log. For example if I went on a trip to the grocery store, it will log all the encounters I had for that trip. And on the map, it will display the grocery store. We also have COVID statistics per country, as well as the latest health-related news.
+
+App : https://github.com/HollandPleskac/Covid-Smart-App
+Website : https://github.com/ShabdVeyyakula/CovidSmart
